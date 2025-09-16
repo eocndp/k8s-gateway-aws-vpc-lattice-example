@@ -10,8 +10,28 @@ spec:
     - matches:
         - path:
             type: PathPrefix
-            value: /
-      backendRefs:
-        - kind: Service
-          name: demo-app
-          port: 80
+            value: /v1
+          filters:
+            - type: URLRewrite
+              urlRewrite:
+                path:
+                  type: ReplacePrefixMatch
+                  replacePrefixMatch: /
+          backendRefs:
+            - kind: Service
+              name: demo-app-a
+              port: 80
+    - matches:
+        - path:
+            type: PathPrefix
+            value: /v2
+          filters:
+            - type: URLRewrite
+              urlRewrite:
+                path:
+                  type: ReplacePrefixMatch
+                  replacePrefixMatch: /
+          backendRefs:
+            - kind: Service
+              name: demo-app-b
+              port: 80
