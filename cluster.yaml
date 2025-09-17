@@ -3,6 +3,7 @@ kind: ClusterConfig
 metadata:
   name: eks-demo
   region: ap-northeast-2
+  version: "1.33"
 vpc:
   cidr: 10.1.0.0/16
   nat:

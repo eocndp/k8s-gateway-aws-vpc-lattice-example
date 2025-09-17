@@ -12,8 +12,8 @@
 
 ## Route53 Private Hosted Zone
 
--   PHZ `example.local` (클러스터 VPC, 클라이언트 VPC 둘 다 연결)
--   CNAME `api.example.local` (Lattice 도메인 연결용)
+-   PHZ `example.com` (클러스터 VPC, 클라이언트 VPC 둘 다 연결)
+-   CNAME `api.example.com` (Lattice 도메인 연결용)
 
 ## EKS Cluster
 
@@ -132,6 +132,9 @@ aws ec2 authorize-security-group-ingress \
 ## EKS Gateway API Controller for VPC Lattice 설치(Helm)
 
 ```shell
+# Gateway API CRD 설치
+kubectl kustomize "github.com/kubernetes-sigs/gateway-api/config/crd?ref=v1.1.0" | kubectl apply -f -
+
 # ECR 로그인
 aws ecr-public get-login-password --region us-east-1 | helm registry login --username AWS --password-stdin public.ecr.aws
 
@@ -140,6 +143,7 @@ helm install gateway-api-controller \
   oci://public.ecr.aws/aws-application-networking-k8s/aws-gateway-controller-chart \
   --version=v1.1.4 \
   --set=serviceAccount.create=false \
+  --set=serviceAccount.name=gateway-api-controller \
   --namespace aws-application-networking-system \
   --set=log.level=info
 ```
@@ -175,14 +179,14 @@ helm upgrade gateway-api-controller \
 전부 kubectl로 적용하고 아래의 명령어로 Lattice 도메인 확인
 
 ```shell
-kubectl get httproute demo-http-route -o json | jq -r '.metadata.annotations["application-networking.k8s.aws/lattice-assigned-domain-name"]'
+kubectl get httproute demo-http-route -o jsonpath='{.metadata.annotations.application-networking\.k8s\.aws/lattice-assigned-domain-name}'
 ```
 
 ## Route53 Private Hosted Zone
 
-PHZ에 `api.example.local` 도메인 생성 후 CNAME 레코드로 Lattice 도메인 연결
+PHZ에 `api.example.com` 도메인 생성 후 CNAME 레코드로 Lattice 도메인 연결
 
-Route53 > PHZ(example.local) > Create Record
+Route53 > PHZ(example.com) > Create Record (VPC: eks-vpc, client-vpc 둘 다 선택)
 
 -   Record name: `api`
 -   Record type: `CNAME`
@@ -194,6 +198,6 @@ Route53 > PHZ(example.local) > Create Record
 Client VPC에 EC2 하나 만들고(인터넷 접속 가능한) 아래 명령어 테스트
 
 ```shell
-dig +short api.example.local
-curl -i http://api.example.local
+dig +short api.example.com
+curl -i http://api.example.com
 ```

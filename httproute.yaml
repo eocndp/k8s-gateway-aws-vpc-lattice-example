@@ -4,34 +4,24 @@ metadata:
   name: demo-http-route
 spec:
   parentRefs:
-    - name: demo-gw
+    - name: demo-sn
       sectionName: http
+  hostnames:
+    - api.example.com
   rules:
     - matches:
         - path:
             type: PathPrefix
             value: /v1
-          filters:
-            - type: URLRewrite
-              urlRewrite:
-                path:
-                  type: ReplacePrefixMatch
-                  replacePrefixMatch: /
-          backendRefs:
-            - kind: Service
-              name: demo-app-a
-              port: 80
+      backendRefs:
+        - kind: Service
+          name: demo-app-a
+          port: 80
     - matches:
         - path:
             type: PathPrefix
             value: /v2
-          filters:
-            - type: URLRewrite
-              urlRewrite:
-                path:
-                  type: ReplacePrefixMatch
-                  replacePrefixMatch: /
-          backendRefs:
-            - kind: Service
-              name: demo-app-b
-              port: 80
+      backendRefs:
+        - kind: Service
+          name: demo-app-b
+          port: 80
