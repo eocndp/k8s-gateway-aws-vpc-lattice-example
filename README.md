@@ -25,6 +25,7 @@ Cluster Version: `1.33`
 
 ```shell
 eksctl create cluster -f cluster.yaml
+aws eks update-kubeconfig --name eks-demo --region ap-northeast-2
 ```
 
 효율적인 CLI 사용을 위해 아래와 같이 환경변수 설정 (AWS CLI 로그인 필수)

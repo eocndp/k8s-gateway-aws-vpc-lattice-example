@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
         - name: demo-app-a
-          image: rlawnsdud/demo:latest
+          image: rlawnsdud/demo:arm
           imagePullPolicy: Always
           ports:
             - containerPort: 3000
@@ -63,7 +63,7 @@ spec:
     spec:
       containers:
         - name: demo-app-b
-          image: rlawnsdud/demo:latest
+          image: rlawnsdud/demo:arm
           imagePullPolicy: Always
           ports:
             - containerPort: 3000
