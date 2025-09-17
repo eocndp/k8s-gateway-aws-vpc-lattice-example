@@ -173,6 +173,7 @@ helm upgrade gateway-api-controller \
 
 > [gateway-class.yaml](./gateway-class.yaml) (GatewayClass)
 > [demo-app.yaml](./demo-app.yaml) (Deployment, Service)
+> [tg-policy.yaml](./tg-policy.yaml) (TargetGroupPolicy)
 > [gateway.yaml](./gateway.yaml) (Gateway, HTTPRoute)
 > [httproute.yaml](./httproute.yaml) (HTTPRoute)
 
